@@ -3,28 +3,22 @@ from bs4 import BeautifulSoup
 
 
 def search(word):
-    r = requests.get(f"https://dle.rae.es/?w={word.lower()}")
+    r = requests.get(f"https://www.dictionary.com/browse/{word.lower()}")
     cont = r.content
 
     soup = BeautifulSoup(cont, "html.parser")
     try:
-        meaning = soup.find("p", {"class": "j"}).text
-
-        if "1. " in meaning:
-            meaning = meaning.replace("1. ", "")
-
-            filters = ["f.", "adj.", "y ", "m.", "coloq.", "U. t. c. s.", "Anat.", "Zool."]
-            for filter in filters:
-                if filter in meaning:
-                    meaning = meaning.replace(filter, "")
-
+        meaning = soup.find("span", {"class": "one-click-content css-1p89gle e1q3nk1v4"}).text
         print(f"{word.title()}:{meaning}")
-    except:
-        print(f"\"{word}\" está mal escrito o no existe.")
 
+    except:
+        print(f"\"{word}\" doesn't exist.")
+
+    except requests.exceptions.ConnectionError:
+        print("No connection available.")
 
 def main():
-    print("Escribe las palabras correctamente, separadas por coma y espacio(persona, animal, fácil, ...)")
+    print("Write the words correctly using coma and space(person, animal, crazy, ...)")
     inp = input()
     words = inp.split(", ")
     print("---")
