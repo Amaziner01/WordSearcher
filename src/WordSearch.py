@@ -13,11 +13,11 @@ def search(word):
         #print(f"{word.title()}:{meaning}")
         print(word.title() + ":" + meaning)
 
-    except:
-        print(word + "doesn't exist.")
-
     except requests.exceptions.ConnectionError:
         print("No connection available.")
+
+    except:
+        print(word + "doesn't exist.")
 
 def main():
     print("Write the words correctly using coma and space(person, animal, crazy, ...)")
